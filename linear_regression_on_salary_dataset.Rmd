@@ -1,0 +1,155 @@
+---
+title: "Linear_regression_on_salary_data"
+output: html_document
+---
+
+### In this Task we can predict the salary data on the basis their experice what they actually get and we can predict the salary data on the basis of the dataset.
+
+## Firstly, we Load the data on the variable, as we see ww have a dataset in xlsx format so we add library "readxl" is used for excel data.
+
+```{r setup, include=FALSE}
+
+library(readxl)
+
+salary_Data <- read_excel("Salary_Data.xlsx")
+
+```
+
+## we check the dataset
+
+```{r cars}
+
+par(mfrow = c(1,2))
+head(salary_Data)
+summary(salary_Data)
+```
+
+## we start EDA process on the data EDA Stands for "Explorartory Data Analysis" and it is also known as "Pre processing"
+
+# 1. Variable identification
+# 2. Univariate analysis
+# 3. Bivariate analysis
+# 4. Missing Value Treatment
+# 5. Outlier Treatment
+# 6. varible transformation
+# 7. variable creation
+
+# but as we see we do not have any outlier no any missing values and no need to ananlysis (univariate and bivariate) becouase we have a small two column dataset.
+# but else we can check outlier with the graph 
+
+
+
+```{r pressure, echo=FALSE}
+
+par(mfrow = c(1,2))
+boxplot(salary_Data$YearsExperience, main = "Experience in years")
+boxplot(salary_Data$Salary,  main = "Salary")
+
+```
+## library "caTools" helps to break the dataset because we need to break the dataset in two dataset test and train.
+
+#  training dataset and test dataset
+
+# sample.split works for only target variable and splitratio convert part you want to take for training
+
+```{r}
+
+library(caTools)
+
+set.seed(10)
+
+split_salary_data <- sample.split(salary_Data$Salary, SplitRatio = 0.75)
+
+split_salary_data
+
+
+
+```
+
+
+## as we see we have a split data in form of True and False so we have to compaew True for  training and Fase for Test
+
+
+```{r}
+train = subset(salary_Data, split_salary_data == T)
+
+testdata = subset(salary_Data, split_salary_data == F)
+
+head(train)
+head(testdata)
+
+```
+
+## creating the model on training Data
+
+```{r}
+
+model <- lm(formula = Salary~., data = train)
+
+summary(model)
+
+```
+## predict the model with the test data
+
+```{r}
+
+
+prediction <- predict(model, testdata)
+
+prediction
+
+
+
+```
+
+## So, we can add these data on the test dataframe and we the difference its easy to say model is corrrect or not
+
+# we can use cbind for the combine the columns in the test dataset
+
+```{r}
+difference <- (testdata$Salary - prediction)
+testdata <- cbind(testdata, prediction, difference)
+
+testdata
+```
+## In the difference columns shows we can ignore 11% error and our model is prediction is good 
+
+## we also find mean absolute percentage error or deviation (MAPE or MAPD)
+
+```{r}
+
+mape <- mean(abs(difference)/ testdata$Salary)
+mape
+```
+
+## as we see our map is very low 3% . So the prediction is enough to say more experience have more salary. 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
