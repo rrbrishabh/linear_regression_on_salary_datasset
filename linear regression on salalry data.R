@@ -57,6 +57,10 @@ testdata <- cbind(testdata, prediction, difference)
 
 square <- (difference)^2
 testdata <- cbind(testdata, square)
+plot(testdata$Salary,type = "o",col = "red", xlab = "Actual", ylab = "Predict", 
+     main = "Difference between actual and predict")
+
+lines(testdata$prediction, type = "o", col = "blue")
 View(testdata)
 
 
