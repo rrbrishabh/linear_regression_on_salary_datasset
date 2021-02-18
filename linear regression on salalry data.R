@@ -61,6 +61,11 @@ plot(testdata$Salary,type = "o",col = "red", xlab = "Actual", ylab = "Predict",
      main = "Difference between actual and predict")
 
 lines(testdata$prediction, type = "o", col = "blue")
+
+library(ggplot2)
+ggplot(testdata, aes(x = testdata$Salary, y = testdata$prediction)) +
+  geom_point() + geom_line() + geom_smooth()
+
 View(testdata)
 
 
